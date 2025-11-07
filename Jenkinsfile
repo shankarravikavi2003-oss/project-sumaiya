@@ -18,5 +18,10 @@ pipeline {
                 sh 'docker build -t newimage .'
                 }
          }
+         stage('Image Scan') {
+            steps {
+                sh 'trivy image newimage:latest > report.txt'
+                }
+            }
     }
 }
