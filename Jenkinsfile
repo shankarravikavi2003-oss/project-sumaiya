@@ -8,10 +8,15 @@ pipeline {
         }
          stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv("sonar) {
+                withSonarQubeEnv("sonar") {
                     sh 'sonar-scanner'
                 }
             }
+         }
+         stage('Build the Docker image') {
+            steps {
+                sh 'docker build -t newimage .'
+                }
          }
     }
 }
