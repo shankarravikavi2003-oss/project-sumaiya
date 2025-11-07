@@ -68,4 +68,4 @@ watchgod==0.7
 wcmatch==8.1.2
 websockets==8.1
 wrapt==1.12.1
-yamllint==1.26.1
+yamllint==1.32.0
