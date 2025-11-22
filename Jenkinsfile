@@ -23,5 +23,25 @@ pipeline {
                 sh 'trivy image newimage:latest > report.txt'
                 }
             }
+         stage('Push to ECR') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'ecrtoken']]) {
+                    sh '''
+                        aws ecr get-login-password --region eu-north-1b | docker login --username AWS --password-stdin 889966879746.dkr.ecr.eu-north-1.amazonaws.com/myrepo
+                        docker tag newimage:latest 889966879746.dkr.ecr.eu-north-1.amazonaws.com/myrepo:latest
+                        docker push 889966879746.dkr.ecr.eu-north-1.amazonaws.com/myrepo:latest
+                    '''
+                    }
+                }
+            }
+        stage('Deploy') {
+            steps {
+                sh '''
+                    sed -i "s|_IMAGE_|889966879746.dkr.ecr.eu-north-1.amazonaws.com/myrepo:latest|g" pod.yaml
+                    kubectl apply -f pod.yaml    
+                '''
+            }
+        }
     }
+    
 }
