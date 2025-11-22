@@ -27,7 +27,7 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'ecrtoken']]) {
                     sh '''
-                        aws ecr get-login-password --region eu-north-1b | docker login --username AWS --password-stdin 889966879746.dkr.ecr.eu-north-1.amazonaws.com/myrepo
+                        aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 889966879746.dkr.ecr.eu-north-1.amazonaws.com
                         docker tag newimage:latest 889966879746.dkr.ecr.eu-north-1.amazonaws.com/myrepo:latest
                         docker push 889966879746.dkr.ecr.eu-north-1.amazonaws.com/myrepo:latest
                     '''
@@ -43,5 +43,3 @@ pipeline {
             }
         }
     }
-    
-}
